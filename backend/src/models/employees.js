@@ -12,43 +12,44 @@
 
 import { Schema, model } from "mongoose";
 
-const empleadosSchema = new Schema(
+const employeesSchema = new Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    correo: {
+    email: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    telefono: {
+    phone: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    direccion: {
+    address: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    puesto: {
+    position: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    fecha_contratacion: {
+    hire_date: {
       type: Date,
-      require: true,
+      required: true,
     },
 
-    salario: {
+    salary: {
       type: Number,
-      require: true,
+      required: true,
     },
-    activo: {
+
+    active: {
       type: Boolean,
     },
   },
@@ -58,4 +59,4 @@ const empleadosSchema = new Schema(
   }
 );
 
-export default model("empleados", empleadosSchema); 
+export default model("employees", employeesSchema);

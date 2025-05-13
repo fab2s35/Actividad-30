@@ -9,29 +9,29 @@
 
 import { Schema, model } from "mongoose";
 
-const clientesSchema = new Schema(
+const clientsSchema = new Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    correo: {
+    email: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    telefono: {
+    phone: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    direccion: {
+    address: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    activo: {
+    active: {
       type: Boolean,
     },
   },
@@ -41,4 +41,4 @@ const clientesSchema = new Schema(
   }
 );
 
-export default model("clientes", clientesSchema); 
+export default model("clients", clientsSchema);

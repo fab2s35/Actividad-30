@@ -11,34 +11,34 @@
 
 import { Schema, model } from "mongoose";
 
-const peliculasSchema = new Schema(
+const moviesSchema = new Schema(
   {
     name: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    descripcion: {
+    description: {
       type: String,
-      require: true,
+      required: true,
     },
 
     director: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    genero: {
+    genre: {
       type: String,
-      require: true,
+      required: true,
     },
 
-    anio: {
+    year: {
       type: Number,
-      require: true,
+      required: true,
     },
 
-    imagen: {
+    image: {
       type: String,
     },
   },
@@ -48,4 +48,4 @@ const peliculasSchema = new Schema(
   }
 );
 
-export default model("peliculas", peliculasSchema);
+export default model("movies", moviesSchema);
