@@ -40,7 +40,7 @@ const empleadosScehmas = new Schema(
     },
 
     fecha_contratacion: {
-      type: Timestamps,
+      type: Date,
       require: true,
     },
 

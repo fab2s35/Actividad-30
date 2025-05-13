@@ -3,7 +3,7 @@ import express from "express";
 import cookieParser from "cookie-parser";
 
 import peliculasRoute from "./src/routes/peliculas.js";
-
+import empleadosRoute from "./src/models/empleados.js"; 
 
 // Creo una constante que es igual a la libreria que importé
 const app = express();
@@ -14,7 +14,7 @@ app.use(cookieParser());
 // Definir las rutas de las funciones que tendrá la página web
 
 app.use("/api/peliculas", peliculasRoute);
-
+app.use("/api/empleados", empleadosRoute);
 
 // Exporto la constante para poder usar express en otros archivos
 export default app;
