@@ -4,15 +4,12 @@
         correo
         telefono
         direccion
-        puesto
-        fecha_contratacion
-        salario
         activo
 */
 
 import { Schema, model } from "mongoose";
 
-const empleadosSchema = new Schema(
+const clientesSchema = new Schema(
   {
     name: {
       type: String,
@@ -34,20 +31,6 @@ const empleadosSchema = new Schema(
       require: true,
     },
 
-    puesto: {
-      type: String,
-      require: true,
-    },
-
-    fecha_contratacion: {
-      type: Date,
-      require: true,
-    },
-
-    salario: {
-      type: Number,
-      require: true,
-    },
     activo: {
       type: Boolean,
     },
@@ -58,4 +41,4 @@ const empleadosSchema = new Schema(
   }
 );
 
-export default model("empleados", empleadosSchema); 
+export default model("clientes", clientesSchema); 
