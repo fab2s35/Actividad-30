@@ -19,12 +19,12 @@ employeesController.deleteEmployee = async (req, res) => {
 //UPDATE
 employeesController.updateEmployee = async (req, res) => {
   // Solicito todos los valores
-  const { name, email, phone, address, position, hire_date, salary, active } = req.body;
+  const { name, email, telephone, address, position, hire_date, salary, active } = req.body;
   // Actualizo
   await employeesModel.findByIdAndUpdate(
     req.params.id,
     {
-      name, email, phone, address, position, hire_date, salary, active
+      name, email, telephone, address, position, hire_date, salary, active
     },
     { new: true }
   );

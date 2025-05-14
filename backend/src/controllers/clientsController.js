@@ -20,12 +20,12 @@ clientsController.deleteClients = async (req, res) => {
 //UPDATE
 clientsController.updateClients = async (req, res) => {
   // Solicito todos los valores
-  const { name, email, phone, address, active } = req.body;
+  const { name, email, telephone, address, active } = req.body;
   // Actualizo
   await clientsModel.findByIdAndUpdate(
     req.params.id,
     {
-      name, email, phone, address, active
+      name, email, telephone, address, active
     },
     { new: true }
   );

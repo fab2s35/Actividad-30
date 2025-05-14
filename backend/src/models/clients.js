@@ -21,7 +21,7 @@ const clientsSchema = new Schema(
       required: true,
     },
 
-    phone: {
+    telephone: {
       type: String,
       required: true,
     },
