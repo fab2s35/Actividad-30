@@ -1,5 +1,5 @@
-import customersModel from "../models/customers.js";
-import employeesModel from "../models/employee.js";
+import clientsModel from "../models/clients.js";
+import employeesModel from "../models/employees.js";
 import bcryptjs from "bcryptjs"; 
 import jsonwebtoken from "jsonwebtoken"; 
 import { config } from "../config.js";
@@ -13,19 +13,18 @@ loginController.login = async (req, res) => {
     let userFound; 
     let userType; 
 
-    // 1. ADMIN
     if (
       email === config.emailAdmin.email &&
       password === config.emailAdmin.password
     ) {
       (userType = "admin"), (userFound = { _id: "admin" });
     } else {
-      //2-EMPLEADO
+
       userFound = await employeesModel.findOne({ email });
       userType = "employee";
 
       if (!userFound) {
-        userFound = await customersModel.findOne({ email });
+        userFound = await clientsModel.findOne({ email });
         userType = "client";
       }
     }

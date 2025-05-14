@@ -1,4 +1,4 @@
-import EmployeeModel from "../models/employee.js";
+import employeesModel from "../models/employees.js";
 import bcryptjs from "bcryptjs"; 
 import jsonwebtoken from "jsonwebtoken"; 
 import { config } from "../config.js";
@@ -12,7 +12,7 @@ registerEmployeesController.register = async (req, res) => {
 
   try {
     //Verificamos si el empleado ya existe
-    const existEmployee = await EmployeeModel.findOne({ email });
+    const existEmployee = await employeesModel.findOne({ email });
     if (existEmployee) {
       return res.json({ message: "Empleado ya existe" });
     }
@@ -21,7 +21,7 @@ registerEmployeesController.register = async (req, res) => {
     const passwordHash = await bcryptjs.hash(password, 10);
 
     // Guardemos el empleado nuevo
-    const newEmployee = new EmployeeModel({
+    const newEmployee = new employeesModel({
       name, email, password: passwordHash, telephone, address, position, hire_date, salary, active
     });
 
