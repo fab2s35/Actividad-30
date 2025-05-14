@@ -7,14 +7,6 @@ employeesController.getEmployees = async (req, res) => {
   res.json(employees);
 };
 
-//INSERT
-employeesController.createEmployees = async (req, res) => {
-  const { name, email, phone, address, position, hire_date, salary, active } = req.body;
-  const newEmployee = new employeesModel({ name, email, phone, address, position, hire_date, salary, active });
-  await newEmployee.save();
-  res.json({ message: "employee saved" });
-};
-
 //DELETE
 employeesController.deleteEmployee = async (req, res) => {
   const deletedEmployee = await employeesModel.findByIdAndDelete(req.params.id);

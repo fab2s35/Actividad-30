@@ -7,16 +7,9 @@ clientsController.getClients = async (req, res) => {
   res.json(clients);
 };
 
-//INSERT
-clientsController.createClients = async (req, res) => {
-  const { name, email, phone, address, active } = req.body;
-  const newClient = new clientsModel({ name, email, phone, address, active });
-  await newClient.save();
-  res.json({ message: "client saved" });
-};
 
 //DELETE
-clientsController.deleteClient = async (req, res) => {
+clientsController.deleteClients = async (req, res) => {
   const deletedClient = await clientsModel.findByIdAndDelete(req.params.id);
   if (!deletedClient) {
     return res.status(404).json({ message: "client wasn't found" });
@@ -25,7 +18,7 @@ clientsController.deleteClient = async (req, res) => {
 };
 
 //UPDATE
-clientsController.updateClient = async (req, res) => {
+clientsController.updateClients = async (req, res) => {
   // Solicito todos los valores
   const { name, email, phone, address, active } = req.body;
   // Actualizo

@@ -1,47 +1,50 @@
-const moviesController = {};
 import moviesModel from "../models/movies.js";
+import { v2 as cloudinary } from "cloudinary";
 
-//SELECT
-moviesController.getMovies = async (req, res) => {
-  const movies = await moviesModel.find();
-  res.json(movies);
+import { config } from "../config.js";
+
+cloudinary.config({
+  cloud_name: config.cloudinary.cloudinary_name,
+  api_key: config.cloudinary.cloudinary_api_key,
+  api_secret: config.cloudinary.cloudinary_api_secret,
+});
+
+const moviesController = {};
+
+moviesController.getAllMovies = async (req, res) => {
+  const posts = await moviesModel.find();
+  res.json(posts);
 };
 
-//INSERT
-moviesController.createMovies = async (req, res) => {
-  const { name, description, director, genre, year, image } = req.body;
-  const newMovie = new moviesModel({ name, description, director, genre, year, image });
-  await newMovie.save();
-  res.json({ message: "movie saved" });
-};
+moviesController.createMovie = async (req, res) => {
+  try {
+    const { name, description, director, genre, year, duration } = req.body;
+    let imageUrl = "";
 
-//DELETE
-moviesController.deleteMovie = async (req, res) => {
-  const deletedMovie = await moviesModel.findByIdAndDelete(req.params.id);
-  if (!deletedMovie) {
-    return res.status(404).json({ message: "movie wasn't found" });
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(
+        req.file.path, 
+        {
+
+        folder: "public",
+        allowed_formats: ["jpg", "png", "jpeg"],
+
+      }
+    );
+      imageUrl = result.secure_url
+    }
+    const newFilm = new moviesModel({  name, description, director, genre, year, duration, image: imageUrl });
+    newMovie.save();
+
+    res.json({ message: "movie saved" });
+
+  } catch (error) {
+
+    console.log("error" + error);
+    
   }
-  res.json({ message: "movie deleted" });
-};
 
-//UPDATE
-moviesController.updateMovie = async (req, res) => {
-  const { name, description, director, genre, year, image } = req.body;
-  await moviesModel.findByIdAndUpdate(
-    req.params.id,
-    {
-      name, 
-      description, 
-      director,
-      genre, 
-      year, 
-      image
-    },
-    { new: true }
-  );
-  res.json({ message: "movie updated" });
 };
 
 export default moviesController;
-
     

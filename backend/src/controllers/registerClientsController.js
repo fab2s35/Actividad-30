@@ -1,25 +1,18 @@
-import jsonwebtoken from "jsonwebtoken"; //Token
-import bcryptjs from "bcryptjs"; //Encriptar
-import nodemailer from "nodemailer"; //Enviar correos
-import crypto from "crypto"; // Codigo aleatorio
+import jsonwebtoken from "jsonwebtoken"; 
+import bcryptjs from "bcryptjs"; 
+import nodemailer from "nodemailer"; 
+import crypto from "crypto"; 
 
-import clientsModel from "../models/clientes.js";
+import clientsModel from "../models/customers.js";
 import { config } from "../config.js";
 
-//Array de funciones
+
 const registerClientsController = {};
 
 registerClientsController.register = async (req, res) => {
   //1- Solicitar los datos que vamos a registrar
   const {
-    name,
-    lastName,
-    birthday,
-    email,
-    password,
-    telephone,
-    dui,
-    isVerified,
+    name, email, password, telephone, adress, active
   } = req.body;
 
   try {
@@ -32,37 +25,25 @@ registerClientsController.register = async (req, res) => {
     // Encriptar la contraseña
     const passwordHash = await bcryptjs.hash(password, 10);
 
-    //Guardos el cliente en la base de datos
     const newClient = new clientsModel({
-      name,
-      lastName,
-      birthday,
-      email,
-      password: passwordHash,
-      telephone,
-      dui: dui || null,
-      isVerified: isVerified || false,
+      name, email, password:passwordHash, telephone, adress, active
     });
 
     await newClient.save();
 
-    // Generar un codigo aleatorio para enviarlo por correo
     const verificationCode = crypto.randomBytes(3).toString("hex");
 
     // Generar un token que contenga el codigo de verficacion
     const tokenCode = jsonwebtoken.sign(
-      //1- ¿Que voy a guardar?
       { email, verificationCode },
-      //2- Secret key
       config.JWT.secret,
-      //3- Cuando expira
       { expiresIn: "2h" }
     );
 
     res.cookie("verificationToken", tokenCode, { maxAge: 2 * 60 * 60 * 1000 });
 
     // Enviar el correo electronico
-    //1- Transporter => quien lo envia
+    //1- quien lo envia
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -71,7 +52,7 @@ registerClientsController.register = async (req, res) => {
       },
     });
 
-    //2- mailOption => Quien lo recibe
+    //2- Quien lo recibe
     const mailOptions = {
       from: config.email.email_user,
       to: email,
@@ -101,7 +82,6 @@ registerClientsController.register = async (req, res) => {
 registerClientsController.verifyCodeEmail = async (req, res) => {
   const { requireCode } = req.body;
 
-  // Obtengo el token guardado en las cookies
   const token = req.cookies.verificationToken;
 
   try {
@@ -109,14 +89,10 @@ registerClientsController.verifyCodeEmail = async (req, res) => {
     const decoded = jsonwebtoken.verify(token, config.JWT.secret);
     const { email, verificationCode: storedCode } = decoded;
 
-    // Comparar el código que envié por correo y está guardado
-    // en las cookies, con el código que el usuario
-    // está ingresando
     if (requireCode !== storedCode) {
       return res.json({ message: "Invalid code" });
     }
 
-    // Marcamos al cliente como verificado
     const client = await clientsModel.findOne({ email });
     client.isVerified = true;
     await client.save();
